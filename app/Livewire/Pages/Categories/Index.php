@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\Category;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +16,8 @@ class Index extends Component
 
     // define layout
     #[Layout('layouts.app')]
+    // define title
+    #[Title('Categories')]
 
     // define proprty
     #[Url]

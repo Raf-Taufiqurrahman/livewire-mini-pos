@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Livewire\Pages\Categories;
+namespace App\Livewire\Pages\Products;
 
+use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithFileUploads;
-use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
 class Create extends Component
 {
@@ -15,18 +16,22 @@ class Create extends Component
     // define layout
     #[Layout('layouts.app')]
     // define title
-    #[Title('Create Category')]
+    #[Title('Create Product')]
 
     // define property
-    public $path = 'public/categories/';
+    public $path = 'public/products/';
     public $name;
     public $image;
+    public $categoryId;
+    public $price;
 
     // define validation
     public function rules()
     {
         return [
-            'name' => 'required|string|min:3|max:255|unique:categories',
+            'name' => 'required|string|min:3|max:255|unique:products',
+            'price' => 'required',
+            'categoryId' => 'required',
             'image' => 'required|image|max:2048',
         ];
     }
@@ -37,23 +42,30 @@ class Create extends Component
         // call validation
         $this->validate();
 
-        // store image category
+        // store image product
         $this->image->storeAs(path: $this->path, name: $this->image->hashName());
 
-        // create new category data
-        Category::create([
+        // create new product data
+        Product::create([
             'name' => $this->name,
             'slug' => str()->slug($this->name),
             'image' => $this->image->hashName(),
+            'category_id' => $this->categoryId,
+            'price' => $this->price,
         ]);
 
         // render view
-        return $this->redirect('/categories', navigate:true);
+        return $this->redirect('/products', navigate:true);
     }
-
 
     public function render()
     {
-        return view('livewire.pages.categories.create');
+        // list categories data
+        $categories = Category::query()
+            ->select('id', 'name')
+            ->orderBy('name')->get();
+
+        // render view
+        return view('livewire.pages.products.create', compact('categories'));
     }
 }

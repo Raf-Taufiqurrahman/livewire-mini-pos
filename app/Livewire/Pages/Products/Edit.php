@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Livewire\Pages\Categories;
+namespace App\Livewire\Pages\Products;
 
+use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithFileUploads;
@@ -16,27 +17,33 @@ class Edit extends Component
     // define layout
     #[Layout('layouts.app')]
     // define title
-    #[Title('Edit Category')]
+    #[Title('Edit Product')]
 
     // define property
-    public Category $category;
-    public $path = 'public/categories/';
+    public Product $product;
+    public $path = 'public/products/';
     public $name;
     public $image;
+    public $categoryId;
+    public $price;
 
     // define lifecycle hooks
     public function mount()
     {
-        // assign proprty name with category name
-        $this->name = $this->category->name;
+        // assign proprty with product data
+        $this->name = $this->product->name;
+        $this->price = $this->product->price;
+        $this->categoryId = $this->product->category_id;
     }
 
     // define valdiation
     public function rules()
     {
         return [
-            'name' => 'required|string|min:3|max:255|unique:categories,name,'.$this->category->id,
+            'name' => 'required|string|min:3|max:255|unique:products,name,'.$this->product->id,
             'image' => 'nullable|image|max:2048',
+            'price' => 'required',
+            'categoryId' => 'required',
         ];
     }
 
@@ -53,25 +60,31 @@ class Edit extends Component
             // store new image
             $this->image->storeAS(path: $this->path, name: $this->image->hashName());
 
-            // update category image
-            $this->category->update([
+            // update product image
+            $this->product->update([
                 'image' => $this->image->hashName(),
             ]);
         }
 
-        // update category data
-        $this->category->update([
+        // update product data
+        $this->product->update([
             'name' => $this->name,
             'slug' => str()->slug($this->name),
+            'price' => $this->price,
+            'category_id' => $this->categoryId,
         ]);
 
         // render view
-        return $this->redirect('/categories', navigate:true);
+        return $this->redirect('/products', navigate:true);
     }
 
     public function render()
     {
-        // render view
-        return view('livewire.pages.categories.edit');
+        // list categories data
+        $categories = Category::query()
+            ->select('id', 'name')
+            ->orderBy('name')->get();
+
+        return view('livewire.pages.products.edit', compact('categories'));
     }
 }
