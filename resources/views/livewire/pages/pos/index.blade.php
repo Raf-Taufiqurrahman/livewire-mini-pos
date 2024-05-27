@@ -1,7 +1,7 @@
-<div class="py-12">
+<div class="py-12 px-4">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex flex-row gap-4">
-            <div class="w-2/3">
+        <div class="flex flex-col md:flex-row gap-4 items-start">
+            <div class="w-full md:w-2/3">
                 <div class="w-full">
                     <x-search placeholder="Search product by name..." />
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-4">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="w-1/3">
+            <div class="w-full md:w-1/3">
                 <div class="py-3 px-4 bg-white rounded-t-lg border">
                     <div class='flex items-center gap-2 uppercase font-semibold text-sm'>
                         SHOPPING CART
@@ -60,9 +60,9 @@
                                             <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                         </svg>
                                     </button>
-                                    <div class="flex flex-col w-full">
+                                    <div class="flex flex-col w-full gap-2">
                                         <div class="font-semibold">{{ $cart->product->name }}</div>
-                                        <div class="flex items-center justify-between gap-2">
+                                        <div class="flex md:flex-col items-center md:items-start lg:flex-row lg:items-center justify-between gap-2">
                                             <div class="font-mono text-sm text-gray-500">
                                                 <sup>Rp</sup> {{ number_format($cart->price, 0) }}
                                             </div>
@@ -114,7 +114,7 @@
                         <button @click="showModal = true" class="text-sm text-center w-full px-3 py-1.5 border bg-gray-900 rounded-md focus:outline-none focus:ring-0 text-gray-50" type="button">Detail Transaction</button>
                         <x-modal type="transaction">
                             <div class="p-4">
-                                <form>
+                                <form wire:submit.prevent="save">
                                     <div class="flex items-center justify-between gap-2 border-b px-4 py-3 border-dashed border-gray-700">
                                         <div class="font-semibold text-sm">
                                             Grand Total
@@ -140,7 +140,12 @@
                                         </div>
                                     </div>
                                     <div class="mt-3">
-                                        <button class="text-sm text-center w-full px-3 py-1.5 border bg-gray-900 rounded-md focus:outline-none focus:ring-0 text-gray-50 border-gray-700" type="button">Save Transaction</button>
+                                        <button
+                                            type="submit"
+                                            class="{{ $pay >= $totalPrice ? 'bg-gray-900 text-gray-50' : 'cursor-not-allowed bg-slate-900 text-gray-500' }} text-sm text-center w-full px-3 py-1.5 border rounded-md focus:outline-none focus:ring-0 border-gray-700"
+                                            {{ $pay >= $totalPrice ? '' : 'disabled' }}>
+                                            {{ $pay >= $totalPrice ? 'Save Transaction' : 'Please complete the payment first' }}
+                                        </button>
                                     </div>
                                 </form>
                             </div>

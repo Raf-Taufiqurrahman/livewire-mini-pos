@@ -40,7 +40,7 @@ class Index extends Component
     public function render()
     {
         // table heads
-        $table_heads = ['No', 'Name', 'Image', 'Category', 'Price', 'Action'];
+        $table_heads = ['No', 'Name', 'Image', 'Category', 'Price', 'Qty', 'Action'];
 
         // list products data
         $products = Product::query()

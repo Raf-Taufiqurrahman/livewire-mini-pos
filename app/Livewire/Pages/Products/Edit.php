@@ -26,6 +26,7 @@ class Edit extends Component
     public $image;
     public $categoryId;
     public $price;
+    public $qty;
 
     // define lifecycle hooks
     public function mount()
@@ -34,6 +35,7 @@ class Edit extends Component
         $this->name = $this->product->name;
         $this->price = $this->product->price;
         $this->categoryId = $this->product->category_id;
+        $this->qty = $this->product->qty;
     }
 
     // define valdiation
@@ -44,6 +46,7 @@ class Edit extends Component
             'image' => 'nullable|image|max:2048',
             'price' => 'required',
             'categoryId' => 'required',
+            'qty' => 'required',
         ];
     }
 
@@ -72,6 +75,7 @@ class Edit extends Component
             'slug' => str()->slug($this->name),
             'price' => $this->price,
             'category_id' => $this->categoryId,
+            'qty' => $this->qty,
         ]);
 
         // render view

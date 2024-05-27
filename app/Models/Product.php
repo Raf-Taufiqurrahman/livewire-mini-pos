@@ -13,7 +13,7 @@ class Product extends Model
     /**
      * fillable
      */
-    protected $fillable = ['name', 'slug', 'category_id', 'image', 'price'];
+    protected $fillable = ['name', 'slug', 'category_id', 'image', 'price', 'qty'];
 
     /**
      * accessor image products
@@ -31,5 +31,13 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * relation transaction detail
+     */
+    public function transaction_details()
+    {
+        return $this->hasMany(TransactionDetail::class);
     }
 }

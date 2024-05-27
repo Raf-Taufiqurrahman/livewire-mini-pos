@@ -5,10 +5,12 @@ namespace App\Livewire\Pages\Pos;
 use App\Models\Cart;
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\Transaction;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -29,6 +31,49 @@ class Index extends Component
     public $totalPrice;
     public $pay;
     public $change;
+
+    // define method save
+    public function save()
+    {
+        // start db transaction
+        DB::transaction(function(){
+            // loop
+            for($i = 0; $i < 6; $i++)
+                // generate random char
+                $char = rand(0,1) ? rand(0, 9) : chr(rand(ord('a'), ord('z')));
+
+            // generate invoice
+            $invoice = 'TRX-'.str()->upper($char);
+
+            // create new transaction
+            $transaction = Transaction::create([
+                'invoice' => $invoice,
+                'user_id' => auth()->user()->id,
+                'cash' => $this->pay,
+                'grand_total' => $this->totalPrice,
+                'change' => $this->change,
+            ]);
+
+            // loop user carts
+            foreach($this->carts as $cart){
+                // create new transaction details
+                $transaction->details()->create([
+                    'product_id' => $cart->product_id,
+                    'qty' => $cart->qty,
+                    'price' => $cart->price
+                ]);
+
+                // update qty product
+                Product::where('id', $cart->product_id)->decrement('qty', $cart->qty);
+            }
+
+            // delete cart
+            $this->carts->each->delete();
+
+            // render view
+            return $this->redirect('/dashboard', navigate: true);
+        });
+    }
 
     // define lifecycle hook
     public function updatedPay()
@@ -149,7 +194,7 @@ class Index extends Component
             // set totalPrice
             $this->totalPrice = $this->totalPrice + $this->subTotalPrice[$cart->id];
             // set change
-            $this->change = $this->totalPrice;
+            $this->change = 0;
         }
     }
 

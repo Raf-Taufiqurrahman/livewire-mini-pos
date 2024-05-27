@@ -7,13 +7,14 @@ use App\Livewire\Pages\Products\Index as ProductIndex;
 use App\Livewire\Pages\Products\Create as ProductCreate;
 use App\Livewire\Pages\Products\Edit as ProductEdit;
 use App\Livewire\Pages\Pos\Index as PosIndex;
+use App\Livewire\Pages\Dashboard\Index as DashboardIndex;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
 Route::group(['middleware' => ['auth']], function(){
     // dashboard route
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', DashboardIndex::class)->name('dashboard');
     // categories route
     Route::group(['prefix' => 'categories', 'as' => 'categories.'], function(){
         Route::get('/', CategoryIndex::class)->name('index');
@@ -28,8 +29,6 @@ Route::group(['middleware' => ['auth']], function(){
     });
     // pos route
     Route::get('/pos', PosIndex::class)->name('pos');
-    // profile route
-    Route::view('profile', 'profile')->name('profile');
 });
 
 

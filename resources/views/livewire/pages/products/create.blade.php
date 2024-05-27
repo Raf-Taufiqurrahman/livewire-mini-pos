@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 px-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-card title="Create New Product">
                 <form wire:submit.prevent="save">
@@ -25,7 +25,14 @@
                             </x-select>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <x-input type="number" label="Product Price" name="price" :value="old('price')" placeholder="Enter a product price..."/>
+                            <div class="flex flex-col md:flex-row items-center gap-2">
+                                <div class="w-full md:w-1/2">
+                                    <x-input type="number" label="Product Price" name="price" :value="old('price')" placeholder="Enter a product price..."/>
+                                </div>
+                                <div class="w-full md:w-1/2">
+                                    <x-input type="number" label="Product Qty" name="qty" :value="old('qty')" placeholder="Enter a product qty..."/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">

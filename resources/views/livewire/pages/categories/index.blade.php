@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 px-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mb-4 flex items-center justify-between gap-4">
                 <x-button type="create" :href="route('categories.create')">
@@ -19,10 +19,10 @@
                             <path d="M9 12h6" />
                             <path d="M12 9v6" />
                         </svg>
-                        Create New Category
+                        <span class="hidden md:block">Create New Category</span>
                     </x-slot>
                 </x-button>
-                <div class="w-1/2">
+                <div class="w-full md:w-1/2">
                     <x-search placeholder="Search categories by name.."/>
                 </div>
             </div>

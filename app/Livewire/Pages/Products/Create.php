@@ -24,6 +24,7 @@ class Create extends Component
     public $image;
     public $categoryId;
     public $price;
+    public $qty;
 
     // define validation
     public function rules()
@@ -33,6 +34,7 @@ class Create extends Component
             'price' => 'required',
             'categoryId' => 'required',
             'image' => 'required|image|max:2048',
+            'qty' => 'required',
         ];
     }
 
@@ -52,6 +54,7 @@ class Create extends Component
             'image' => $this->image->hashName(),
             'category_id' => $this->categoryId,
             'price' => $this->price,
+            'qty' => $this->qty,
         ]);
 
         // render view
