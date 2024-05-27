@@ -21,7 +21,7 @@
                 class="px-3 py-2 flex items-center gap-1 rounded-lg text-sm font-semibold text-rose-500 bg-rose-100 border-rose-200 border hover:border-rose-300 hover:bg-rose-200">
                 {{ $title }}
             </button>
-            <x-modal :id="$id"/>
+            <x-modal :id="$id" type="delete"/>
         </div>
     @break
 

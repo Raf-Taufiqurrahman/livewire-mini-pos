@@ -55,7 +55,7 @@ class Edit extends Component
 
         if($this->image){
             // delete old image
-            Storage::disk('local')->delete($this->path.basename($this->category->image));
+            Storage::disk('local')->delete($this->path.basename($this->product->image));
 
             // store new image
             $this->image->storeAS(path: $this->path, name: $this->image->hashName());

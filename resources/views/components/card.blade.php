@@ -5,6 +5,6 @@
         {{ $title }}
     </div>
 </div>
-<div class="px-4 py-3 bg-white border border-t-0 border-b-0 rounded-b-lg">
+<div class="px-4 py-3 bg-white border border-t-0 rounded-b-lg">
     {{ $slot }}
 </div>
